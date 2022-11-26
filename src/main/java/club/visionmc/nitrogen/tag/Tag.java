@@ -1,8 +1,12 @@
 package club.visionmc.nitrogen.tag;
 
+import club.visionmc.nitrogen.Nitrogen;
 import club.visionmc.nitrogen.rank.Rank;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,19 +18,31 @@ import java.util.UUID;
  * @date 11/26/2022
  */
 @Getter @Setter
+@Data
+@AllArgsConstructor
 public class Tag {
 
-    private UUID uuid;
-    private String name = "";
-    private String prefix = "§f";
-    private String color = "§f";
-    private String displayName = "";
+    private String id;
+    private String displayName;
+    private String prefix;
+    private String color;
 
-    private int priority = 0;
+    private int priority;
 
-    private boolean grantable = true;
-    private boolean hidden = false;
+    private boolean grantable;
+    private boolean hidden;
 
-    @Getter
-    private static List<Tag> tags = new ArrayList<>();
+    public void save(){
+        Document filter = new Document("id", this.id);
+        Document old = Nitrogen.getInstance().getMongoHandler().getTags().find(filter).first();
+        if(old == null) return;
+        Document replace = new Document("id", this.id)
+                .append("displayName", this.displayName)
+                .append("prefix", this.prefix)
+                .append("color", this.color)
+                .append("priority", this.priority)
+                .append("grantable", this.grantable)
+                .append("hidden", this.hidden);
+        Nitrogen.getInstance().getMongoHandler().getTags().replaceOne(old, replace);
+    }
 }
