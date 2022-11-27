@@ -6,6 +6,7 @@ import club.visionmc.nitrogen.rank.Rank;
 import club.visionmc.nitrogen.tag.Tag;
 import club.visionmc.nitrogen.util.Chat;
 import club.visionmc.nitrogen.util.PermissionUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -32,7 +33,7 @@ public class GeneralListener implements Listener {
     public void chat(AsyncPlayerChatEvent e){
         Rank rank = profileHandler.getProfileOrCreate(e.getPlayer().getUniqueId()).getHighestRank();
         Tag tag = profileHandler.getProfileOrCreate(e.getPlayer().getUniqueId()).getActiveTag();
-        e.setFormat(Chat.format((tag == null ? "" : tag.getPrefix()) + "&r" + rank.getPrefix()) + "%1$s" + Chat.LIGHT_GRAY + ": " + Chat.RESET.toString() + "%2$s");
+        e.setFormat(Chat.format(rank.getPrefix()) + "%1$s" + (tag == null ? "" : " " + ChatColor.RESET + Chat.format(tag.getPrefix())) + Chat.LIGHT_GRAY + ": " + Chat.RESET.toString() + "%2$s");
     }
 
     @EventHandler

@@ -29,7 +29,7 @@ public class MongoHandler {
     public void connect(){
         mongoClient = MongoClients.create("mongodb://localhost:27017");
         try{
-            mongoDatabase = mongoClient.getDatabase("Exolon");
+            mongoDatabase = mongoClient.getDatabase("Nitrogen");
             ranks = mongoDatabase.getCollection("ranks");
             profiles = mongoDatabase.getCollection("profiles");
             punishments = mongoDatabase.getCollection("punishments");

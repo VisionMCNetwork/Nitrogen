@@ -34,7 +34,7 @@ public class TagGrantHandler {
             tagGrants.add(parseTagGrant(document));
             index++;
         }
-        Nitrogen.getInstance().log(ChatColor.GREEN + "Loaded a total of " + ChatColor.YELLOW + index + " grant" + (index == 1 ? "" : "s") + ChatColor.GREEN + ".");
+        Nitrogen.getInstance().log(ChatColor.GREEN + "Loaded a total of " + ChatColor.YELLOW + index + " tag grant" + (index == 1 ? "" : "s") + ChatColor.GREEN + ".");
     }
 
     public void recalculateTagGrants(){

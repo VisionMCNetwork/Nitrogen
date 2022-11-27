@@ -27,7 +27,7 @@ public class TagHandler {
             tags.add(parseTag(document));
             index++;
         }
-        Nitrogen.getInstance().log(ChatColor.GREEN + "Loaded a total of " + ChatColor.YELLOW + index + " tags" + (index == 1 ? "" : "s") + ChatColor.GREEN + ".");
+        Nitrogen.getInstance().log(ChatColor.GREEN + "Loaded a total of " + ChatColor.YELLOW + index + " tag" + (index == 1 ? "" : "s") + ChatColor.GREEN + ".");
     }
 
     public void recalculateTags(){

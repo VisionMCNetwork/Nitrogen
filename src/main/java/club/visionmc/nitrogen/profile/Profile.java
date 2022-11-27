@@ -47,6 +47,16 @@ public class Profile {
         return highest;
     }
 
+    public Tag getHighestTag(){
+        Tag highest = Nitrogen.getInstance().getTagHandler().getTag("default");
+        for(TagGrant grant : getTagGrants()){
+            if(grant.getTag().getPriority() > highest.getPriority() && grant.getRemovedAt() <= 0){
+                highest = grant.getTag();
+            }
+        }
+        return highest;
+    }
+
     public boolean isOnline(){
         return (Nitrogen.getInstance().getServer().getPlayer(uuid) != null);
     }
