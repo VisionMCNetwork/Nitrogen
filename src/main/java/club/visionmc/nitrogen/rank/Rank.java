@@ -24,7 +24,6 @@ public class Rank {
     private String id;
     private String displayName;
     private String prefix;
-    private String suffix;
     private String color;
 
     private int priority;
@@ -47,7 +46,6 @@ public class Rank {
         Document replace = new Document("id", this.id)
                 .append("displayName", this.displayName)
                 .append("prefix", this.prefix)
-                .append("suffix", this.suffix)
                 .append("color", this.color)
                 .append("priority", this.priority)
                 .append("staff", this.staff)

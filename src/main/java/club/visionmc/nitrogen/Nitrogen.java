@@ -1,6 +1,7 @@
 package club.visionmc.nitrogen;
 
 import club.visionmc.nitrogen.commands.paramaters.ProfileParameterType;
+import club.visionmc.nitrogen.commands.paramaters.PunishmentTypeParameterType;
 import club.visionmc.nitrogen.commands.paramaters.RankParameterType;
 import club.visionmc.nitrogen.commands.paramaters.TagParameterType;
 import club.visionmc.nitrogen.database.MongoHandler;
@@ -14,13 +15,18 @@ import club.visionmc.nitrogen.listener.punishment.MuteListener;
 import club.visionmc.nitrogen.profile.Profile;
 import club.visionmc.nitrogen.profile.ProfileHandler;
 import club.visionmc.nitrogen.punishment.PunishmentHandler;
+import club.visionmc.nitrogen.punishment.PunishmentType;
 import club.visionmc.nitrogen.rank.Rank;
 import club.visionmc.nitrogen.rank.RankHandler;
+import club.visionmc.nitrogen.redis.RedisHandler;
 import club.visionmc.nitrogen.server.ServerHandler;
 import club.visionmc.nitrogen.server.ServerStatus;
 import club.visionmc.nitrogen.server.heartbeat.HeartbeatTask;
+import club.visionmc.nitrogen.staff.StaffPacketListener;
+import club.visionmc.nitrogen.staff.packets.*;
 import club.visionmc.nitrogen.tag.Tag;
 import club.visionmc.nitrogen.tag.TagHandler;
+import club.visionmc.nitrogen.util.Cooldowns;
 import club.visionmc.xeon.Xeon;
 import club.visionmc.xeon.command.param.defaults.*;
 import lombok.Getter;
@@ -46,6 +52,7 @@ public class Nitrogen extends JavaPlugin {
     @Getter private TagGrantHandler tagGrantHandler;
     @Getter private ProfileHandler profileHandler;
     @Getter private PunishmentHandler punishmentHandler;
+    @Getter private RedisHandler redisHandler;
     @Getter private TagHandler tagHandler;
 
     @Getter private BukkitTask heartbeatTask;
@@ -61,7 +68,7 @@ public class Nitrogen extends JavaPlugin {
         this.profileHandler = new ProfileHandler();
         this.punishmentHandler = new PunishmentHandler();
         this.tagHandler = new TagHandler();
-
+        this.redisHandler = new RedisHandler("nitrogen-packet");
         initializeHandlers();
         setupListeners();
 
@@ -76,6 +83,19 @@ public class Nitrogen extends JavaPlugin {
         Xeon.getInstance().getCommandHandler().registerParameterType(Rank.class, new RankParameterType());
         Xeon.getInstance().getCommandHandler().registerParameterType(Profile.class, new ProfileParameterType());
         Xeon.getInstance().getCommandHandler().registerParameterType(Tag.class, new TagParameterType());
+        Xeon.getInstance().getCommandHandler().registerParameterType(PunishmentType.class, new PunishmentTypeParameterType());
+
+        redisHandler.registerListener(new StaffPacketListener());
+        redisHandler.registerPacket(new StaffChatPacket());
+        redisHandler.registerPacket(new StaffRequestPacket());
+        redisHandler.registerPacket(new StaffReportPacket());
+        redisHandler.registerPacket(new StaffPunishmentPacket());
+        redisHandler.registerPacket(new StaffRemovePunishmentPacket());
+        redisHandler.registerPacket(new AdminChatPacket());
+
+
+        Cooldowns.createCooldown("report");
+        Cooldowns.createCooldown("request");
 
     }
 
@@ -100,7 +120,6 @@ public class Nitrogen extends JavaPlugin {
     private void setupListeners(){
         getServer().getPluginManager().registerEvents(new GeneralListener(), this);
         getServer().getPluginManager().registerEvents(new GrantListener(), this);
-        getServer().getPluginManager().registerEvents(new TagGrantListener(), this);
         getServer().getPluginManager().registerEvents(new MuteListener(), this);
         getServer().getPluginManager().registerEvents(new BanListener(), this);
     }

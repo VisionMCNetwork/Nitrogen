@@ -23,7 +23,7 @@ public class RankHandler {
 
     public void init(){
         int index = 0;
-        if(!rankExistsInDB("default")){
+        if(!rankExistsInDB("Default")){
             createRank("Default");
         }
         for(Document document : mongoHandler.getRanks().find()){
@@ -31,7 +31,6 @@ public class RankHandler {
                     document.getString("id"),
                     document.getString("displayName"),
                     document.getString("prefix"),
-                    document.getString("suffix"),
                     document.getString("color"),
                     document.getInteger("priority"),
                     document.getBoolean("staff"),
@@ -54,7 +53,6 @@ public class RankHandler {
                     document.getString("displayName"),
                     document.getString("id"),
                     document.getString("prefix"),
-                    document.getString("suffix"),
                     document.getString("color"),
                     document.getInteger("priority"),
                     document.getBoolean("staff"),
@@ -92,12 +90,11 @@ public class RankHandler {
 
     public void createRank(String name){
         if(rankExists(name.toLowerCase())) return;
-        Rank rank = new Rank(name.toLowerCase(), "&f", "&f", "&f", name, 1, false, false, true, false, Lists.newArrayList(), Lists.newArrayList());
+        Rank rank = new Rank(name.toLowerCase(), name, "&f", "&f", 1, false, false, true, false, Lists.newArrayList(), Lists.newArrayList());
         Document document = new Document(
                 "id", rank.getId())
                 .append("displayName", rank.getDisplayName())
                 .append("prefix", rank.getPrefix())
-                .append("suffix", rank.getSuffix())
                 .append("color", rank.getColor())
                 .append("priority", rank.getPriority())
                 .append("staff", rank.isStaff())

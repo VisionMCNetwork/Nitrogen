@@ -33,7 +33,7 @@ public class GeneralListener implements Listener {
     public void chat(AsyncPlayerChatEvent e){
         Rank rank = profileHandler.getProfileOrCreate(e.getPlayer().getUniqueId()).getHighestRank();
         Tag tag = profileHandler.getProfileOrCreate(e.getPlayer().getUniqueId()).getActiveTag();
-        e.setFormat(Chat.format(rank.getPrefix()) + "%1$s" + (tag == null ? "" : " " + ChatColor.RESET + Chat.format(tag.getPrefix())) + Chat.LIGHT_GRAY + ": " + Chat.RESET.toString() + "%2$s");
+        e.setFormat(Chat.format(rank.getPrefix() + rank.getColor()) + "%1$s" + (tag == null ? "" : " " + ChatColor.RESET + Chat.format(tag.getPrefix())) + Chat.LIGHT_GRAY + ": " + Chat.RESET.toString() + "%2$s");
     }
 
     @EventHandler

@@ -4,7 +4,9 @@ import club.visionmc.nitrogen.Nitrogen;
 import club.visionmc.nitrogen.commands.menu.grant.GrantMenu;
 import club.visionmc.nitrogen.commands.menu.taggrant.TagGrantMenu;
 import club.visionmc.nitrogen.grant.rank.Grant;
+import club.visionmc.nitrogen.grant.rank.menu.GrantsMenu;
 import club.visionmc.nitrogen.grant.tag.TagGrant;
+import club.visionmc.nitrogen.grant.tag.menu.TagGrantsMenu;
 import club.visionmc.nitrogen.profile.Profile;
 import club.visionmc.nitrogen.rank.Rank;
 import club.visionmc.nitrogen.tag.Tag;
@@ -51,6 +53,20 @@ public class GrantCommands {
         sender.sendMessage(Chat.LIGHT_GREEN + "Successfully granted " + Chat.RESET.toString() + Chat.format(tag.getColor() + target.getUsername()) + Chat.RESET.toString() + Chat.LIGHT_GREEN + " the "
                 + Chat.RESET.toString() + tag.getDisplayName() + Chat.RESET.toString() + Chat.LIGHT_GREEN + " tag "
                 + (TimeUtil.parseTime(length) == Long.MAX_VALUE ? "indefinitely" : "for a period of " + Chat.YELLOW + TimeUtil.formatDuration(TimeUtil.parseTime(length)) + Chat.LIGHT_GREEN + " due to " + Chat.YELLOW + reason + Chat.LIGHT_GREEN + "."));
+    }
+
+    @Command(names = {"grants"}, permission = "nitrogen.grant.admin")
+    public static void grants(Player player, @Param(name = "target")Profile target){
+        Nitrogen.getInstance().getServer().getScheduler().runTaskLaterAsynchronously(Nitrogen.getInstance(), () -> {
+            new GrantsMenu(target).openMenu(player);
+        }, 1L);
+    }
+
+    @Command(names = {"taggrants"}, permission = "nitrogen.grant.admin")
+    public static void taggrants(Player player, @Param(name = "target")Profile target){
+        Nitrogen.getInstance().getServer().getScheduler().runTaskLaterAsynchronously(Nitrogen.getInstance(), () -> {
+            new TagGrantsMenu(target).openMenu(player);
+        }, 1L);
     }
 
 }

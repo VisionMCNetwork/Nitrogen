@@ -33,7 +33,7 @@ public class ListCommand {
         List<String> names = Lists.newArrayList();
         profiles.sort((o1, o2) -> o2.getHighestRank().getPriority() - o1.getHighestRank().getPriority());
         for(Profile profile : profiles){
-            String name = Chat.format(Nitrogen.getInstance().getServer().getPlayer(profile.getUuid()).hasMetadata("invisible") ? "&7*&r" : "") + profile.getHighestRank().getColor() + profile.getUsername() + Chat.RESET;
+            String name = Chat.format(Nitrogen.getInstance().getServer().getPlayer(profile.getUuid()).hasMetadata("invisible") ? "&7*&r" : "") + Chat.format(profile.getHighestRank().getColor() + profile.getUsername()) + Chat.RESET;
             names.add(name);
         }
         String merged = "";
